@@ -1,0 +1,11 @@
+<%- include("partials/header") %>
+
+<h1>Scribbles!</h1>
+<% locals.docs.forEach(doc => { %>
+    <h2><%= doc.title %></h2>
+    <h3><%= doc.gist %></h3>
+    <p><%= doc.username %> <%= doc.createdAt %></p>
+    <p><%= doc.scribble %></p>
+<%})%>
+
+<%- include("partials/footer") %>
