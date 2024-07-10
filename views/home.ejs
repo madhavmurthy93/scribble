@@ -1,0 +1,23 @@
+<%- include("partials/header") %>
+
+<h1>Scribble!</h1>
+<form id="scribble-create">
+  <label for="title">Title</label>
+  <input type="text" id="title" name="title" required />
+
+  <label for="gist">Gist</label>
+  <input type="text" id="gist" name="gist" required />
+
+  <label for="username">Username</label>
+  <input type="text" id="username" name="username" required />
+
+  <label for="password">Password</label>
+  <input type="password" id="password" name="password" required />
+
+  <label for="scribble">Scribble</label>
+  <textarea id="scribble" name="scribble" rows="4" cols="50" required></textarea>
+
+  <input type="submit" value="Submit">
+</form>
+
+<%- include("partials/footer") %>
