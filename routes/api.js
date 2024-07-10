@@ -4,6 +4,7 @@ import slugify from "slugify";
 import { promisify } from "util";
 import path from "path";
 import { fileURLToPath } from "url";
+import { error } from "console";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const __parentDirName = path.dirname(__dirname);
 
@@ -78,7 +79,7 @@ router.post("/scribble", async (req, res) => {
         const doc = await db.insertAsync(scribble);
         console.log("Scribble inserted:", doc);
 
-        // send a created status code, with a redirect Url in the header; browser redirects to the home page
+        // send a created status code, with a redirect Url in the header
         const scribbleUri = `/${body.username}/${slug}`;
         res.set('Location', scribbleUri);
         res.status(201).json({ message: "Scribble created", redirectUrl: scribbleUri});
@@ -89,13 +90,47 @@ router.post("/scribble", async (req, res) => {
 });
 
 // Update a scribble
-router.put("/:username/:slug", (req, res) => {
-    res.sendStatus(200);
+router.put("/:username/:slug", async (req, res) => {
+    try {
+        const body = req.body;
+        const at = new Date();
+        const slug = slugify(body.title.toLowerCase());
+        const scribble = {
+            title: body.title,
+            slug: slug,
+            gist: body.gist,
+            scribble: body.scribble,
+            updatedAt: at
+        };
+        const numReplaced = await db.updateAsync({ username: req.params.username, slug: req.params.slug, password: body.password }, { $set: scribble}, {});
+        if (numReplaced === 0) {
+            throw error("Failed to find scribble to update");
+        }
+        // send a updated status code, with a redirect Url in the header
+        const scribbleUri = `/${req.params.username}/${slug}`;
+        res.set('Location', scribbleUri);
+        res.status(200).json({ message: "Scribble updated", redirectUrl: scribbleUri });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({error: "Failed to update scribble"});
+    }
 });
 
 // Delete a scribble
-router.delete(":username/:slug", (req, res) => {
-    res.sendStatus(200);
+router.delete("/:username/:slug", async (req, res) => {
+    try {
+        const additionalInfo = JSON.parse(req.headers['x-additional-info']);
+        const numRemoved = await db.removeAsync({ username: req.params.username, slug: req.params.slug, password: additionalInfo.password }, {});
+        if (numRemoved === 0) {
+            throw error("Failed to find scribble to delete");
+        }
+        const userUri = `/${req.params.username}`;
+        res.set('Location', userUri);
+        res.status(200).json({ message: "Scribble deleted", redirectUrl: userUri });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({error: "Failed to delete scribble"});
+    }
 });
 
 export default router;

@@ -7,8 +7,12 @@ const server = "http://localhost:3000";
 // Render home page with all posts
 router.get("/", async (req, res) => {
     try {
-        const docs = (await axios.get(`${server}/api/scribbles`)).data;
-        res.render("scribbles", docs);
+        const data = (await axios.get(`${server}/api/scribbles`)).data;
+        const filteredDocs = data.docs.map(doc => {
+            const { password, ...filteredDoc } = doc;
+            return filteredDoc;
+        });
+        res.render("scribbles", { docs: filteredDocs });
     } catch (err) {
         console.log(err);
         res.status(500).json({error: "Failed to find scribbles"});
@@ -23,8 +27,12 @@ router.get("/scribble", (req, res) => {
 // Render user page with all posts by user
 router.get("/:username", async (req, res) => {
     try {
-        const docs = (await axios.get(`${server}/api/${req.params.username}/scribbles`)).data;
-        res.render("scribbles", docs);
+        const data = (await axios.get(`${server}/api/${req.params.username}/scribbles`)).data;
+        const filteredDocs = data.docs.map(doc => {
+            const { password, ...filteredDoc } = doc;
+            return filteredDoc;
+        });
+        res.render("scribbles", { docs: filteredDocs });
     } catch (err) {
         console.log(err);
         res.status(500).json({error: "Failed to find scribbles"});
@@ -35,13 +43,8 @@ router.get("/:username", async (req, res) => {
 router.get("/:username/:slug", async (req, res) => {
     try {
         const doc = (await axios.get(`${server}/api/${req.params.username}/${req.params.slug}`)).data;
-        res.render("scribble", {
-            title: doc.title,
-            gist: doc.gist,
-            username: doc.username,
-            createdAt: doc.createdAt,
-            scribble: doc.scribble
-        });
+        const { password, ...filteredDoc } = doc;
+        res.render("scribble", filteredDoc);
     } catch (err) {
         console.log(err);
         res.status(500).json({error: "Failed to find scribble"});
@@ -49,8 +52,15 @@ router.get("/:username/:slug", async (req, res) => {
 });
 
 // Render the edit scribble page
-router.get("/:username/:slug/scribble", (req, res) => {
-    res.sendStatus(200);
+router.get("/:username/:slug/scribble", async (req, res) => {
+    try {
+        const doc = (await axios.get(`${server}/api/${req.params.username}/${req.params.slug}`)).data;
+        const { password, ...filteredDoc } = doc;
+        res.render("scribble-edit", filteredDoc);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({error: "Failed to find scribble"});
+    }
 });
 
 export default router;
