@@ -5,12 +5,9 @@ document.addEventListener('DOMContentLoaded', function() {
             event.preventDefault();
 
             const formData = new FormData(event.target);
-            const formObject = Object.fromEntries(formData.entries());
-
             const res = await fetch("/api/scribble", {
                 method: "POST",
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formObject)
+                body: formData
             });
 
             if (res.status === 201) {
@@ -28,14 +25,12 @@ document.addEventListener('DOMContentLoaded', function() {
             event.preventDefault();
 
             const formData = new FormData(event.target);
-            const formObject = Object.fromEntries(formData.entries());
             const pathname = new URL(window.location.href).pathname;
             const uriPath = pathname.substring(0, pathname.lastIndexOf("/"));
             if (event.submitter.id === "update") {
                 const res = await fetch("/api" + uriPath, {
                     method: "PUT",
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(formObject)
+                    body: formData
                 });
 
                 if (res.status === 200) {
@@ -45,6 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     console.error('Failed to update resource');
                 }
             } else {
+                const formObject = Object.fromEntries(formData.entries());
                 const res = await fetch("/api" + uriPath, {
                     method: "DELETE",
                     headers: { 'Content-Type': 'application/json', 'X-Additional-Info': JSON.stringify(formObject) }

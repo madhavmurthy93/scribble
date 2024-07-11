@@ -3,6 +3,7 @@
 <h1>Scribbles!</h1>
 <% locals.docs.forEach(doc => { %>
     <h2><%= doc.title %></h2>
+    <img src=<%= '/' + doc.imagepath %> />
     <h3><%= doc.gist %></h3>
     <p><%= doc.username %> <%= doc.createdAt %></p>
     <p><%= doc.scribble %></p>
