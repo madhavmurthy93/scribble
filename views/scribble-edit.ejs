@@ -1,28 +1,48 @@
 <%- include("partials/header") %>
 
-<h1>Scribble!</h1>
-<form id="scribble-edit" enctype="multipart/form-data">
-  <label for="title">Title</label>
-  <input type="text" id="title" name="title" value="<%=locals.title%>" required />
+<div class="row justify-content-center align-items-center py-3">
+  <div class="col-6">
+    <h1>Scribble!</h1>
+    <form id="scribble-edit" enctype="multipart/form-data">
+      <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" id="title" class="form-control form-control-lg"name="title" value="<%=locals.title%>" required />
+      </div>
 
-  <img src=<%= '/' + locals.imagepath %> />
+      <div class="mb-3">
+        <img src=<%= '/' + locals.imagepath %> />
+      </div>
+      <div class="mb-3">
+        <label for="image" class="form-label">Title image</label>
+        <input type="file" class="form-control" name="image" accept="image/*">
+      </div>
+      <input type="text" id="imagepath" name="imagepath" value="<%='/' + locals.imagepath%>" hidden />
 
-  <label for="image">Title image</label>
-  <input type="file" name="image" accept="image/*">
+      <div class="mb-3">
+        <label for="gist" class="form-label">Gist</label>
+        <input type="text" id="gist" class="form-control" name="gist" value="<%=locals.gist%>" required />
+      </div>
 
-  <input type="text" id="imagepath" name="imagepath" value="<%='/' + locals.imagepath%>" hidden />
+      <div class="mb-3">
+        <label for="scribble" class="form-label">Scribble</label>
+        <textarea id="scribble" class="form-control" name="scribble" rows="4" cols="50" required><%=locals.scribble%></textarea>
+      </div>
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" id="username" readonly class="form-control-plaintext" name="username" value="<%=locals.username%>" />
+      </div>
 
-  <label for="gist">Gist</label>
-  <input type="text" id="gist" name="gist" value="<%=locals.gist%>" required />
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" id="password" class="form-control" name="password" required />
+      </div>
 
-  <label for="scribble">Scribble</label>
-  <textarea id="scribble" name="scribble" rows="4" cols="50" required><%=locals.scribble%></textarea>
-
-  <label for="password">Password</label>
-  <input type="password" id="password" name="password" required />
-
-  <input type="submit" id="update" value="Update" />
-  <input type="submit" id="delete" value="Delete" />
-</form>
+      <div class="mb-3 d-md-flex gap-2 justify-content-md-center">
+        <button type="submit" id="update" class="btn btn-light" value="Update">Update</button>
+        <button type="submit" id="delete" class="btn btn-danger" value="Delete">Delete</button>
+      </div>
+    </form>
+  </div>
+</div>
 
 <%- include("partials/footer") %>

@@ -1,12 +1,23 @@
 <%- include("partials/header") %>
 
-<h1>Scribbles!</h1>
-<% locals.docs.forEach(doc => { %>
-    <h2><%= doc.title %></h2>
-    <img src=<%= '/' + doc.imagepath %> />
-    <h3><%= doc.gist %></h3>
-    <p><%= doc.username %> <%= doc.createdAt %></p>
-    <p><%= doc.scribble %></p>
-<%})%>
+<div class="row justify-content-center align-items-center pt-3">
+  <div class="col-6">
+    <h1 class="display-4 text-center">Scribbles!</h1>
+  </div>
+</div>
+    <% locals.docs.forEach(doc => { %>
+    <div class="row justify-content-center align-items-center py-3">
+      <div class="col-6">
+        <h2 class="mb-3 display-5"><a class="link-body-emphasis link-underline link-underline-opacity-0 link-opacity-75-hover" href=<%="/" + doc.username + "/" + doc.slug%>><%= doc.title %></a></h2>
+        <p class="mb-3"><span class="fw-semibold"><%= doc.username %></span> <span class="datetime"><%= doc.createdAt %></span></p>
+        <a href=<%="/" + doc.username + "/" + doc.slug%>><img class="img-fluid mb-3" src=<%= '/' + doc.imagepath %> /></a>
+        <p class="fw-light mb-3"><%= doc.gist %></p>
+        <hr />
+        <p class="mb-3"><%= doc.scribble %></p>
+      </div>
+    </div>
+    <hr />
+    <%})%>
+    </div>
 
 <%- include("partials/footer") %>

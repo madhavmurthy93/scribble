@@ -1,9 +1,17 @@
 <%- include("partials/header") %>
 
-<h1><%= locals.title %></h1>
-<img src=<%="/" + locals.imagepath%> />
-<h2><%= locals.gist %></h2>
-<p><%= locals.username %> <%= locals.createdAt %></p>
-<p><%= locals.scribble %></p>
+<div class="row justify-content-center align-items-center py-3">
+  <div class="col-6">
+    <div class="d-flex justify-content-between align-items-center">
+      <h1 class="mb-3 display-5"><%= locals.title %></h1>
+      <a class="btn btn-light" href=<%="/" + locals.username + "/" + locals.slug + "/scribble"%>>Edit</a>
+    </div>
+    <p class="mb-3"><span class="fw-semibold"><%= locals.username %></span> <span class="datetime"><%= locals.createdAt %></span></p>
+    <img class="img-fluid mb-3" src=<%="/" + locals.imagepath%> />
+    <p class="fw-light mb-3"><%= locals.gist %></h2></p>
+    <hr />
+    <p class="mb-3"><%= locals.scribble %></p>
+  </div>
+</div>
 
 <%- include("partials/footer") %>

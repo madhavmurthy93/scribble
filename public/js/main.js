@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+    makeDatesReadable();
     const scribbleCreate = document.querySelector("#scribble-create");
     if (scribbleCreate) {
         scribbleCreate.addEventListener("submit", async (event) => {
@@ -55,5 +56,19 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-
 });
+
+function makeDatesReadable() {
+    const originals = document.querySelectorAll(".datetime");
+    for (let original of originals) {
+        const date = new Date(original.textContent);
+        const options = {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          };
+
+          const readableDate = date.toLocaleDateString("en-US", options);
+          original.textContent = readableDate;
+    }
+}
